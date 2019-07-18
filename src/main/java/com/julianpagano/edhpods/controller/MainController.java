@@ -15,7 +15,7 @@ public class MainController {
 
 	@RequestMapping(value = "/createPods")
 	@ResponseBody
-	public String startQuest() {
+	public String createPods() {
 		return "Hello World!";
 	}
 
