@@ -62,6 +62,7 @@
         var request = $.ajax({
           type : "POST",
           url : "${home}createPods",
+          data: { strPlayers: $('#players-textarea').val() },
           success : function(response) {
             console.log("SUCCESS: ", response);
             $('#created-pods').fadeIn('slow');
