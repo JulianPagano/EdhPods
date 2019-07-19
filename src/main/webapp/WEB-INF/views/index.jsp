@@ -59,26 +59,21 @@
 
     <!-- Page Content -->
     <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <h1 class="mt-5" id="create-pods-button"><button type="button" class="btn btn-primary btn-lg btn-block">Generar!</button></h1>
-            <h2 class="mt-2 text-center" id="quest-title">Jugadores</button></h2>
-            <div id="players-input">
-                <div class="form-group">
-                  <textarea class="form-control rounded-0" style="resize: none;" id="players-textarea" rows="3" placeholder="Pagano, Bruno P, Tanke, Denis, ..."></textarea>
-                </div>
-            </div>
-            <div class="alert alert-success" role="alert">
-              <h5 class="alert-heading" id="quest-title">La mesa del mism&iacute;simo infierno</h5>
-              <ul class="list mb-0">
-                  <li class="list-item">Lorem ipsum</li>
-                  <li class="list-item">Phasellus iaculis</li>
-                  <li class="list-item">Nulla volutpat</li>
-              </ul>
-            </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="mt-2 text-center" id="quest-title">Jugadores</button></h2>
+          <div id="players-input">
+              <div class="form-group">
+                <textarea class="form-control rounded-0" style="resize: none;" id="players-textarea" rows="3" placeholder="Pagano, Bruno P, Tanke, Denis, ..."></textarea>
+              </div>
           </div>
+          <h1 id="create-pods-button"><button type="button" class="btn btn-primary btn-lg btn-block">Generar!</button></h1>
         </div>
       </div>
+      <div id="created-pods-div" class="row">
+
+      </div>
+    </div>
 
     <!-- jQuery first, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
@@ -86,15 +81,29 @@
   
     <script type="text/javascript">
 
+      /**
+      * Randomize array element order in-place.
+      * Using Durstenfeld shuffle algorithm.
+      */
+      function shuffleArray(array) {
+          for (var i = array.length - 1; i > 0; i--) {
+              var j = Math.floor(Math.random() * (i + 1));
+              var temp = array[i];
+              array[i] = array[j];
+              array[j] = temp;
+          }
+      }
+
+
       $(document)
         /* Esconder el loader animado al completar la consulta Ajax */
         .on({
           ajaxStart: function() {
               $('#loader').fadeIn('fast');
-            }, 
-            ajaxStop: function() {
+          }, 
+          ajaxStop: function() {
               $('#loader').hide();
-            }
+          }
         });
 
       $('#create-pods-button')
@@ -105,7 +114,7 @@
 
       function startQuest() {
         
-        $('#loader').fadeOut('fast');
+        $('#created-pods-div').empty();
         
         var request = $.ajax({
           type : "POST",
@@ -114,14 +123,42 @@
           success : function(response) {
             console.log("SUCCESS: ", response);
 
-            var tableNames = ['La mesa de la hypermegamuerte', 
-                              'La mesa supermegainfernal', 
+            var tableNames = ['La mesa de la megamuerte', 
+                              'La mesa hyperinfernal', 
                               'La mesa del inframundo', 
-                              'La mesa del mism\u00DEsimo infierno', 
+                              'La mesa del mism\u00EDsimo infierno', 
                               'La mesa de la maldad absoluta'];
-            shuffle(tableNames);
+            shuffleArray(tableNames);
 
-            $('#created-pods').fadeIn('slow');
+            var alertColors = ['alert alert-primary', 
+                               'alert alert-secondary', 
+                               'alert alert-success', 
+                               'alert alert-danger', 
+                               'alert alert-warning', 
+                               'alert alert-info'];
+            shuffleArray(alertColors);
+
+            var i, j;
+            for (i = 0; i < response.length; i++) {
+              var colDiv 		= $('<div></div>').addClass('col-lg-4');
+              var alertDiv 	= $('<div></div>').addClass('alert').addClass(alertColors[i]);
+              var alertTitle 	= $('<h5></h5>').addClass('alert-heading').text(tableNames[i]);
+              alertDiv.append(alertTitle);
+              var alertUl 	= $('<ul></ul>').addClass('list mb-0');
+              
+              for (j = 0; j < response[i].length; j++) {
+                if (response[i][j] != null) {
+                  var alertLi = $('<li></li>').addClass('list-item').text(response[i][j]);
+                  alertUl.append(alertLi);
+                }
+              }	
+              
+              alertDiv.append(alertUl);
+              colDiv.append(alertDiv);
+              $('#created-pods-div').append(colDiv);
+            }
+
+            $('#created-pods-div').fadeIn('slow');
           },
           error : function(e) {
             console.log("ERROR: ", e);
