@@ -12,6 +12,47 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   
+    <style type="text/css">
+    
+      /* Animacion del loader */
+      .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        animation: spin 2s linear infinite;
+        /*position: absolute;*/
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+      }
+      
+      .tiny-loader {
+        border: 4px solid #f3f3f3; /* Light grey */
+        border-top: 4px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 2s linear infinite;
+        /*position: absolute;*/
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+      }
+      
+      @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+      }
+      /* FIN Animacion del loader */
+    
+    </style>
+
   </head>
   
   <body>
@@ -19,17 +60,21 @@
     <!-- Page Content -->
     <div class="container">
         <div class="row">
-          <div class="col-lg-12 text-center">
+          <div class="col-lg-12">
             <h1 class="mt-5" id="create-pods-button"><button type="button" class="btn btn-primary btn-lg btn-block">Generar!</button></h1>
-            <div class="loader" id="loader" style="display:none"></div>
-            <h1 class="mt-5" id="quest-title">EDH Pods!</button></h1>
+            <h2 class="mt-2 text-center" id="quest-title">Jugadores</button></h2>
             <div id="players-input">
                 <div class="form-group">
                   <textarea class="form-control rounded-0" style="resize: none;" id="players-textarea" rows="3" placeholder="Pagano, Bruno P, Tanke, Denis, ..."></textarea>
                 </div>
             </div>
-            <div id="created-pods" style="display:none">
-
+            <div class="alert alert-success" role="alert">
+              <h5 class="alert-heading" id="quest-title">La mesa del mism&iacute;simo infierno</h5>
+              <ul class="list mb-0">
+                  <li class="list-item">Lorem ipsum</li>
+                  <li class="list-item">Phasellus iaculis</li>
+                  <li class="list-item">Nulla volutpat</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -44,6 +89,9 @@
       $(document)
         /* Esconder el loader animado al completar la consulta Ajax */
         .on({
+          ajaxStart: function() {
+              $('#loader').fadeIn('fast');
+            }, 
             ajaxStop: function() {
               $('#loader').hide();
             }
@@ -65,6 +113,14 @@
           data: { strPlayers: $('#players-textarea').val() },
           success : function(response) {
             console.log("SUCCESS: ", response);
+
+            var tableNames = ['La mesa de la hypermegamuerte', 
+                              'La mesa supermegainfernal', 
+                              'La mesa del inframundo', 
+                              'La mesa del mism\u00DEsimo infierno', 
+                              'La mesa de la maldad absoluta'];
+            shuffle(tableNames);
+
             $('#created-pods').fadeIn('slow');
           },
           error : function(e) {

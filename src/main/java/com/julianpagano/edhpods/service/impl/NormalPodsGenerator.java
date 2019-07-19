@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.julianpagano.edhpods.service.inter.PodsGenerator;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class NormalPodsGenerator implements PodsGenerator {
 
 	public String[][] createPods(List<String> playersList) {
@@ -12,7 +15,7 @@ public class NormalPodsGenerator implements PodsGenerator {
 		Collections.shuffle(playersList);
 
 		int numOfPlayers = playersList.size();
-		int numOfTables = (int) Math.ceil(numOfPlayers / 4);
+		int numOfTables = (int) Math.ceil((float) numOfPlayers / 4);
 
 		String[][] pods = new String[numOfTables][4];
 
@@ -21,7 +24,7 @@ public class NormalPodsGenerator implements PodsGenerator {
 
 			pods[table][spot] = playersList.get(i);
 
-			if (table < numOfTables) {
+			if (table < numOfTables - 1) {
 				table++;
 			}
 			else {
