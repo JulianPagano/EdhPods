@@ -124,7 +124,7 @@
             console.log("SUCCESS: ", response);
 
             var tableNames = ['La mesa de la megamuerte', 
-                              'La mesa hyperinfernal', 
+                              'La mesa del castigo infinito', 
                               'La mesa del inframundo', 
                               'La mesa del mism\u00EDsimo infierno', 
                               'La mesa de la maldad absoluta', 
