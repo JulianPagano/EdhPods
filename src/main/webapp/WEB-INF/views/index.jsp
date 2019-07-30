@@ -127,7 +127,8 @@
                               'La mesa hyperinfernal', 
                               'La mesa del inframundo', 
                               'La mesa del mism\u00EDsimo infierno', 
-                              'La mesa de la maldad absoluta'];
+                              'La mesa de la maldad absoluta', 
+                              'La mesa de la tortura eterna'];
             shuffleArray(tableNames);
 
             var alertColors = ['alert alert-primary', 
