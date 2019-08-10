@@ -70,8 +70,8 @@
           <h1 id="create-pods-button"><button type="button" class="btn btn-primary btn-lg btn-block">Generar!</button></h1>
         </div>
       </div>
+      <div class="loader" id="loader" style="display:none"></div>
       <div id="created-pods-div" class="row">
-
       </div>
     </div>
 
@@ -101,7 +101,7 @@
           ajaxStart: function() {
               $('#loader').fadeIn('fast');
           }, 
-          ajaxStop: function() {
+          ajaxError: function() {
               $('#loader').hide();
           }
         });
@@ -138,6 +138,8 @@
                                'alert alert-warning', 
                                'alert alert-info'];
             shuffleArray(alertColors);
+
+            $('#loader').hide();
 
             var i, j;
             for (i = 0; i < response.length; i++) {
