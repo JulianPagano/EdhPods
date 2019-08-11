@@ -65,6 +65,7 @@
           <div id="players-input">
               <div class="form-group">
                 <textarea class="form-control rounded-0" style="resize: none;" id="players-textarea" rows="3" placeholder="Pagano, Bruno P, Tanke, Denis, ..."></textarea>
+                <span class="badge badge-secondary float-right" id="num-players" style="margin-top: -23px; margin-right: 5px;">0 Jugadores</span>
               </div>
           </div>
           <h1 id="create-pods-button"><button type="button" class="btn btn-primary btn-lg btn-block">Generar!</button></h1>
@@ -81,6 +82,8 @@
   
     <script type="text/javascript">
 
+      var arrPlayers;
+
       /**
       * Randomize array element order in-place.
       * Using Durstenfeld shuffle algorithm.
@@ -94,9 +97,7 @@
           }
       }
 
-
       $(document)
-        /* Esconder el loader animado al completar la consulta Ajax */
         .on({
           ajaxStart: function() {
               $('#loader').fadeIn('fast');
@@ -112,6 +113,17 @@
           startQuest();
         });
 
+      $('#players-textarea')
+        .keyup(function() {
+          var countPlayers;
+          var countTables;
+          
+          var strPlayers = $('#players-textarea').val().trim();
+          arrPlayers = strPlayers.split(',').filter(function(v){return v!==''});
+
+          $('#num-players').html(arrPlayers.length + ' jugadores');
+        });
+
       function startQuest() {
         
         $('#created-pods-div').empty();
@@ -119,7 +131,7 @@
         var request = $.ajax({
           type : "POST",
           url : "${home}createPods",
-          data: { strPlayers: $('#players-textarea').val() },
+          data: { arrPlayers },
           success : function(response) {
             console.log("SUCCESS: ", response);
 

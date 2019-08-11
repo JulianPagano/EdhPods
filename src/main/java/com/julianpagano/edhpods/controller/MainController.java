@@ -1,8 +1,6 @@
 package com.julianpagano.edhpods.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import com.julianpagano.edhpods.service.inter.PodsGenerator;
 
@@ -26,17 +24,9 @@ public class MainController {
 
 	@RequestMapping(value = "/createPods", method = RequestMethod.POST)
 	@ResponseBody
-	public String[][] createPods(@RequestParam String strPlayers) {
+	public String[][] createPods(@RequestParam(value="arrPlayers[]", required=false) String[] arrPlayers) {
 		
-		String[] playersArr = strPlayers.split(",");
-
-		for (int i = 0; i < playersArr.length; i++) {
-			playersArr[i] = playersArr[i].replace("\t", "").replace("\n", "").trim();
-		}
-
-		List<String> playersList = new ArrayList<String>(Arrays.asList(playersArr));
-		
-		String[][] pods = podGenerator.createPods(playersList);
+		String[][] pods = podGenerator.createPods(Arrays.asList(arrPlayers));
 
 		return pods;
 	}
